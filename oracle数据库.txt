@@ -1,0 +1,121 @@
+sqlplus Jsj322/Jsj123456@121.251.254.218/orcl
+
+insert into 材料费表(材料费编号,材料费,材料一,材料二,材料三,材料四) values(1,7000,2000,2000,2000,1000);
+insert into 材料费表(材料费编号,材料费,材料一,材料二,材料三) values(2,6000,2000,2000,2000);
+insert into 材料费表(材料费编号,材料费,材料一,材料二,材料三) values(3,6500,2000,2000,2500);
+insert into 材料费表(材料费编号,材料费,材料一,材料二,材料四) values(4,6000,2000,2000,2000);
+insert into 材料费表(材料费编号,材料费,材料一,材料二,材料四) values(5,7000,2000,2000,3000);
+insert into 材料费表(材料费编号,材料费) values(6,0);
+
+create table zyb(
+单据号 char(10) not null,
+预算单位 char(20) not null,
+井号 char(10) not null,
+预算金额 number not null,
+预算人 char(10) not null,
+预算日期 date not null,
+开工日期 date not null,
+完工日期 date not null,
+施工单位 char(20) not null,
+施工内容 char(10) not null,
+材料费 int not null,
+人工费 number not null,
+设备费 number not null,
+其他费用 number not null,
+结算金额 number not null,
+结算人 char(10) not null,
+结算日期 date not null,
+入账金额 number,
+入账人 char(10),
+入账日期 date,
+primary key(单据号),
+foreign key(井号) references 油水井表(井号),
+foreign key(施工单位) references 施工单位表(施工单位名称),
+foreign key(材料费) references 材料费表(材料费编号));
+
+insert into zyb(单据号,预算单位,井号,预算金额,预算人,预算日期,开工日期,完工日期,施工单位, 施工内容,材料费,人工费,设备费,其他费用,结算金额,结算人,结算日期,入账金额,入账人,入账日期) values('zy2016001','采油一矿1队','y001',10000.00,'张强',to_date('2017-2-1','yyyy-mm-dd'),to_date('2017-2-4','yyyy-mm-dd'),to_date('2017-2-25','yyyy-mm-dd'),'作业公司作业一队','堵漏',1,2500.00,1000.00,1400.00,11900.00,'李想',to_date('2017-2-26','yyyy-mm-dd'),11900,'王丽',to_date('2017-2-28','yyyy-mm-dd'));
+insert into zyb(单据号,预算单位,井号,预算金额,预算人,预算日期,开工日期,完工日期,施工单位, 施工内容,材料费,人工费,设备费,其他费用,结算金额,结算人,结算日期,入账金额,入账人,入账日期) values('zy2016002','采油一矿2队','y003',11000.00,'张强',to_date('2017-2-1','yyyy-mm-dd'),to_date('2017-2-4','yyyy-mm-dd'),to_date('2017-2-23','yyyy-mm-dd'),'作业公司作业二队','检泵',2,1500.00,1000.00,2400.00,10900.00,'李想',to_date('2017-2-26','yyyy-mm-dd'),10900,'王丽',to_date('2017-2-28','yyyy-mm-dd'));
+insert into zyb(单据号,预算单位,井号,预算金额,预算人,预算日期,开工日期,完工日期,施工单位, 施工内容,材料费,人工费,设备费,其他费用,结算金额,结算人,结算日期,入账金额,入账人,入账日期) values('zy2016003','采油一矿2队','s001',10500.00,'张强',to_date('2017-2-1','yyyy-mm-dd'),to_date('2017-2-6','yyyy-mm-dd'),to_date('2017-2-23','yyyy-mm-dd'),'作业公司作业二队','检泵',3,2000.00,500.00,1400.00,10400.00,'李想',to_date('2017-2-26','yyyy-mm-dd'),10400,'王丽',to_date('2017-2-28','yyyy-mm-dd'));
+insert into zyb(单据号,预算单位,井号,预算金额,预算人,预算日期,开工日期,完工日期,施工单位, 施工内容,材料费,人工费,设备费,其他费用,结算金额,结算人,结算日期,入账金额,入账人,入账日期) values('zy2016004','采油二矿1队','s002',12000.00,'张强',to_date('2017-2-1','yyyy-mm-dd'),to_date('2017-2-4','yyyy-mm-dd'),to_date('2017-2-24','yyyy-mm-dd'),'作业公司作业三队','防砂',4,2000.00,1000.00,1600.00,10600.00,'李想',to_date('2017-2-26','yyyy-mm-dd'),10600,'赵六',to_date('2017-2-28','yyyy-mm-dd'));
+insert into zyb(单据号,预算单位,井号,预算金额,预算人,预算日期,开工日期,完工日期,施工单位, 施工内容,材料费,人工费,设备费,其他费用,结算金额,结算人,结算日期) values('zy2016005','采油二矿2队','y005',12000.00,'张强',to_date('2017-2-1','yyyy-mm-dd'),to_date('2017-2-4','yyyy-mm-dd'),to_date('2017-2-28','yyyy-mm-dd'),'作业公司作业三队','防砂',5,1000.00,2000.00,1300.00,11300.00,'李想',to_date('2017-2-26','yyyy-mm-dd'));
+
+
+select 单据号,材料费表.材料费,材料费表.材料一,材料费表.材料二,材料费表.材料三,材料费表.材料四  from zyb,材料费表 where zyb.材料费 = 材料费表.材料费编号 and zyb.结算日期 between to_date('2017-2-1','yyyy-mm-dd') and to_date('2017-2-28','yyyy-mm-dd') and zyb.预算单位 = '采油一矿2队';
+select sum(入账金额) from zyb where zyb.结算日期 between to_date('2017-2-1','yyyy-mm-dd') and to_date('2017-2-28','yyyy-mm-dd')and zyb.预算单位 = '采油一矿2队';
+select sum(预算金额) from zyb where zyb.结算日期 between to_date('2017-2-1','yyyy-mm-dd') and to_date('2017-2-28','yyyy-mm-dd')and zyb.预算单位 = '采油一矿2队';
+select DISTINCT 入账人 from zyb;
+select 单据号 from zyb where 入账金额 is null and 结算金额 is not null;
+select 单据号,入账金额 from zyb where zyb.预算单位 = '采油一矿2队' order by 入账金额 desc;
+select 施工单位,sum(结算金额) from  zyb group by 施工单位;
+select 单据号,材料费表.材料费,材料一,材料二,材料三,材料四 from zyb,材料费表 where zyb.材料费=材料费表.材料费编号 and 材料费编号 in(select 材料费编号 from 材料费表 where 材料三>=2000);
+select 单据号 from zyb where 施工单位 = '作业公司作业二队';
+select 单据号 from zyb where 施工单位 = '作业公司作业一队' union select 单据号 from zyb where 施工单位 = '作业公司作业二队';
+
+update zyb set 人工费 = 人工费+100,结算金额 = 结算金额+100 where 单据号 = 'zy2016005';
+delete from zyb where 结算金额 is not null and 入账金额 is null;
+
+begin
+insert into 材料费表 values(6,7000,2000,2000，2000，1000);
+insert into zyb values('zy2016006','112202002','y005',10000,'张强','05-01-2016','05-04-2016','05-25-2016','作业公司作业一队','堵漏',6,2500,1000,1400,11900,'李想','05-26-2016',11900,'王丽','05-28-2016');
+commit;
+dbms_output.PUT_LINE('ALL commited');
+exception
+when others then
+rollback;
+dbms_output.PUT_LINE('ERROR');
+end;
+/
+
+begin
+for xiangmu in(select * from zyb)
+loop
+dbms_output.PUT_LINE('单据号:' || xiangmu.单据号);
+dbms_output.PUT_LINE(' 预算单位' || xiangmu.预算单位);
+dbms_output.PUT_LINE(' 井号' || xiangmu.井号);
+dbms_output.PUT_LINE(' 预算金额' || xiangmu.预算金额);
+dbms_output.PUT_LINE(' 预算人' || xiangmu.预算人);
+dbms_output.PUT_LINE(' 预算日期' || xiangmu.预算日期);
+dbms_output.PUT_LINE(' 开工日期' || xiangmu.开工日期);
+dbms_output.PUT_LINE(' 完工日期' || xiangmu.完工日期);
+dbms_output.PUT_LINE(' 施工单位' || xiangmu.施工单位);
+dbms_output.PUT_LINE(' 施工内容' || xiangmu.施工内容);
+dbms_output.PUT_LINE(' 人工费' || xiangmu.人工费);
+dbms_output.PUT_LINE(' 设备费' || xiangmu.设备费);
+dbms_output.PUT_LINE(' 其他费用' || xiangmu.其他费用);
+dbms_output.PUT_LINE(' 结算金额' || xiangmu.结算金额);
+dbms_output.PUT_LINE(' 结算人' || xiangmu.结算人);
+dbms_output.PUT_LINE(' 结算日期' || xiangmu.结算日期);
+dbms_output.PUT_LINE(' 入账金额' || xiangmu.入账金额);
+dbms_output.PUT_LINE(' 入账人' || xiangmu.入账人);
+dbms_output.PUT_LINE(' 入账日期' || xiangmu.入账日期);
+end loop;
+end;
+/
+
+create or replace view zyb_view
+as
+select 单据号,预算单位,井号,预算金额,预算人,预算日期,开工日期,完工日期,施工单位, 施工内容,人工费,设备费,其他费用,结算金额,结算人,结算日期,入账金额,入账人,入账日期,材料费表.* from zyb,材料费表 where zyb.材料费 = 材料费表.材料费编号;
+select 单据号,材料一 from zyb_view;
+select 预算单位,材料费 from zyb_view where 施工单位 = '作业公司作业二队';
+
+create or replace procedure zyb_proc(单位 in char(20),开始时间 in date,结束时间 in date)
+is
+单位名称 char(20)；
+预算日期1 date;
+结算日期1 date;
+入账日期1 date;
+预算金额1 number;
+结算金额1 number;
+入账金额1 number;
+未结算金额 number;
+未入账金额 number;
+begin
+select 单位名称 into f from 单位代码表 where 单位 = 单位代码;
+select distinct 预算日期 into 预算日期1 from zyb where 单位名称 = 预算单位;
+select distinct 结算日期 into 结算日期1 from zyb where 单位名称 = 预算单位;
+select distinct 入账日期 into 入账日期1 from zyb where 单位名称 = 预算单位;
+select sum(预算金额) into 预算金额1 from zyb where 单位名称 = 预算单位 and(预算日期1 between 开始时间 and 结束时间);
+select sum(结算金额) into 结算金额1 from zyb where 单位名称 = 预算单位 and(结算日期1 between 开始时间 and 结束时间);
+select sum(入账金额) into 入账金额1 from zyb where 单位名称 = 预算单位 and(入账日期1 between 开始时间 and 结束时间);
+未结算金额:=预算金额1-结算金额1;
+未入账金额:=结算金额1-入账金额1;
